@@ -24,15 +24,13 @@ beforeEach( async () => {
     ctx.currentTestName = expect.getState().currentTestName
 })
 
-beforeEach( async () => {
-    console.log(ctx.friendlyTestName())
+afterAll( async () => {
+    console.log('Disposing')
+    await ctx.dispose()
 })
 
-/**
- * Ensure driver is cleaned up.
- */
-afterAll( async () => {
-    await ctx.dispose()
+afterEach( async () => {
+    await ctx.screenSnap('final')
 })
 
 beforeAll(async () => {

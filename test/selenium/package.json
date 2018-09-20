@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@types/js-yaml": "^3.11.2",
+    "aws-sdk": "^2.318.0",
     "axios": "^0.18.0",
     "chromedriver": "^2.38.3",
     "indent-string": "^3.2.0",

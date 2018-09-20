@@ -5,30 +5,43 @@ import {toMatchImageSnapshot} from 'jest-image-snapshot'
 
 
 import {Context} from 'context'
+import {ParseBool} from 'util/parseBool'
 
 const opts = new Options()
 
 jest.setTimeout(60000)
 
-expect.extend({ toMatchImageSnapshot })
-
 const envOpts = {
-    RUNDECK_URL: process.env.RUNDECK_URL || 'http://127.0.0.1:4440'
+    RUNDECK_URL: process.env.RUNDECK_URL || 'http://127.0.0.1:4440',
+    CI: ParseBool(process.env.CI),
+    HEADLESS: ParseBool(process.env.HEADLESS) || ParseBool(process.env.CI)
 }
 
 export async function CreateContext() {
-    opts.addArguments('window-size=1200,1000')
+    if (envOpts.HEADLESS) {
+        opts.addArguments('--headless', 'window-size=1192,870')
+        expect.extend({ toMatchImageSnapshot })
+    }
+    else {
+        opts.addArguments('window-size=1200,1000')
+        expect.extend({
+            toMatchImageSnapshot: (received: any, ...actual: any[]) => {
+                return {
+                    message: () => 'NOOP',
+                    pass: true
+                }
+            }
+        })
+    }
 
-    if (process.env.CI)
-        opts.addArguments('--headless')
+    opts.addArguments('--disable-rtc-smoothness-algorithm', '--disable-gpu-compositing', '--disable-gpu', '--force-device-scale-factor=1', '--disable-lcd-text', '--font-render-hinting=medium')
 
     let driver = await new webdriver.Builder()
         .forBrowser('chrome')
         .setChromeOptions(opts)
         .build()
 
-    // await driver.manage().window().setRect({height: 1000, width: 1200})
+    let ctx = new Context(driver, envOpts.RUNDECK_URL, envOpts.CI)
 
-    let ctx = new Context(driver, envOpts.RUNDECK_URL)
     return ctx
 }

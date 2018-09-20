@@ -7,6 +7,7 @@ import { ProjectImporter } from 'projectImporter';
 interface Opts {
     url: string
     jest: string
+    headless: boolean
 }
 
 class SeleniumCommand {
@@ -32,6 +33,12 @@ class SeleniumCommand {
                 type: 'array',
                 choices: ['all', 'visual-regression']
             })
+            .option("h", {
+                alias: "headless",
+                describe: "Run Chrome in headless mode",
+                type: 'boolean',
+                default: false
+            })
     }
 
     async handler(opts: Opts) {
@@ -48,7 +55,8 @@ class SeleniumCommand {
             stdio: 'inherit',
             env: {
                 ...process.env,
-                RUNDECK_URL: opts.url
+                RUNDECK_URL: opts.url,
+                HEADLESS: opts.headless.toString()
             }})
         if (ret != 0)
             process.exitCode = 1

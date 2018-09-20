@@ -3,7 +3,6 @@ import {CreateContext} from 'test/selenium'
 import {LoginPage} from 'pages/login.page'
 import {NavigationPage} from 'pages/navigation.page'
 
-import {sleep} from 'async/util';
 import 'test/rundeck'
 
 // We will initialize and cleanup in the before/after methods
@@ -21,15 +20,13 @@ beforeEach( async () => {
     ctx.currentTestName = expect.getState().currentTestName
 })
 
-beforeEach( async () => {
-    console.log(ctx.friendlyTestName())
+afterAll( async () => {
+    console.log('Disposing')
+    await ctx.dispose()
 })
 
-/**
- * Ensure driver is cleaned up.
- */
-afterAll( async () => {
-    await ctx.dispose()
+afterEach( async () => {
+    await ctx.screenSnap('final')
 })
 
 it('Logs in through the GUI', async () => {

@@ -40,6 +40,6 @@ export class LoginPage extends Page {
 
         await loginBtn.click()
 
-        await driver.wait(until.titleMatches(/^((?!Login).)*$/i))
+        await driver.wait(until.titleMatches(/^((?!Login).)*$/i), 5000)
     }
 }
