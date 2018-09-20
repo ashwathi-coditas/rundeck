@@ -40,7 +40,7 @@ export class ProjectImporter {
          * Project import
          */
         console.log('Importing project...')
-        await this.client.projectArchiveImport(this.projectName, await FS.readFile(importFileName))
+        await this.client.projectArchiveImport(this.projectName, await FS.readFile(importFileName), {importConfig: true})
         // await exec(`rd projects archives import --file ${importFileName} --project ${this.projectName}`)
 
         /**
