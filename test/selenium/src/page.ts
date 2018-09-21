@@ -30,6 +30,7 @@ export abstract class Page {
             this.hideVersionBox(),
             this.disableTransitions(),
             this.hideServerUuid(),
+            this.hideTests(),
             this.blur()
         ])
     }
@@ -40,6 +41,15 @@ export abstract class Page {
         await this.ctx.driver.executeScript((element: HTMLElement) => {
             element.style.setProperty('display', 'none')
         }, versionBox)
+    }
+
+    async hideTests() {
+        const testElems = await this.ctx.driver.findElements(By.xpath(`//span[contains(.,'Tests Passed')]`))
+        if (testElems.length > 0) {
+            await this.ctx.driver.executeScript((elements: HTMLElement[]) => {
+                elements.forEach(e => e.style.setProperty('display', 'none'))
+            }, testElems)
+        }
     }
 
     async hideServerUuid() {
