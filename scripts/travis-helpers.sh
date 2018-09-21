@@ -21,7 +21,7 @@ shopt -s globstar
 source scripts/helpers.sh
 
 ## Overrides: Should be commented out in master
-# RUNDECK_BUILD_NUMBER="3347"
+RUNDECK_BUILD_NUMBER="4093"
 # RUNDECK_TAG="v3.0.0-alpha4"
 
 export ECR_REPO=055798170027.dkr.ecr.us-east-2.amazonaws.com/rundeck/rundeck
