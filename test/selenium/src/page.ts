@@ -29,6 +29,7 @@ export abstract class Page {
             this.hideSpinners(),
             this.hideVersionBox(),
             this.disableTransitions(),
+            this.hideServerUuid(),
             this.blur()
         ])
     }
@@ -39,6 +40,16 @@ export abstract class Page {
         await this.ctx.driver.executeScript((element: HTMLElement) => {
             element.style.setProperty('display', 'none')
         }, versionBox)
+    }
+
+    async hideServerUuid() {
+        try {
+            const serverUuid = await this.ctx.driver.findElement(By.className('rundeck-server-uuid'))
+            if (serverUuid)
+                await this.ctx.driver.executeScript((element: HTMLElement) => {
+                    element.parentElement.parentElement.style.setProperty('display', 'none')
+                }, serverUuid)
+        } catch{}
     }
 
     /** Hide spinners */

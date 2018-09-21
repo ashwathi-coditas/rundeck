@@ -7,7 +7,7 @@
     "selenium": "./bin/deck selenium",
     "selenium:watch": "./bin/deck selenium -j='--watch'",
     "selenium:viz": "NETWORK=host docker-compose -f docker-local-compose.yml run --no-deps selenium \"npm install && ./bin/deck selenium -u http://`hostname`:4440 -h\"",
-    "selenium:viz:update": "docker-compose run --rm --no-deps selenium \"npm install && ./bin/deck selenium -u http://rundeck:4440 -h -j='-u'\""
+    "selenium:viz:update": "NETWORK=host docker-compose -f docker-local-compose.yml run --no-deps selenium \"npm install && ./bin/deck selenium -u http://`hostname`:4440 -h -j='-u'\""
   },
   "author": "",
   "license": "ISC",
