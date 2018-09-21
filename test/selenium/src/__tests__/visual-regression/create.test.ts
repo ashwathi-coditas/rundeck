@@ -25,7 +25,6 @@ beforeEach( async () => {
 })
 
 afterAll( async () => {
-    console.log('Disposing')
     await ctx.dispose()
 })
 

@@ -18,7 +18,7 @@ class SeleniumCommand {
         return yargs
             .option("u", {
                 alias: "url",
-                default: "http://127.0.0.1:4440",
+                default: `http://${process.env.HOSTNAME}:4440`,
                 describe: "Rundeck URL"
             })
             .option("j", {
@@ -43,8 +43,6 @@ class SeleniumCommand {
 
     async handler(opts: Opts) {
         const args = `./node_modules/.bin/jest ${opts.jest}`
-
-        console.log(args)
 
         const client = new Rundeck(new PasswordCredentialProvider(opts.url, 'admin', 'admin'), opts.url)
 
