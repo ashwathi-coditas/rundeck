@@ -1,8 +1,8 @@
 version: "3"
 
 services:
-  rundeck1:
-    image: rundeckapp/testdeck:rdtest-${RDTEST_VER-latest}
+  rundeck:
+    image: rundeck/rundeck
     hostname: rundeck1
     environment:
       - RUNDECK_NODE=localhost
@@ -20,7 +20,18 @@ services:
       - resources:/home/rundeck/resources:rw
       - tests:/home/rundeck/tests:rw
 
+  selenium:
+    image: rundeck/selenium@sha256:a7579fed4d16004f3e32d1cfd12ce4b4fbc81c58041cb9e324902caedeb36447
+    tty: true
+    network_mode: ${NETWORK:-bridge}
+    links:
+    - rundeck
+    volumes:
+    - ./:/app 
+    - node_modules:/app/node_modules:nocopy
+
 volumes:
   logs:
   resources:
   tests:
+  node_modules:

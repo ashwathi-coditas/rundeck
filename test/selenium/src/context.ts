@@ -33,7 +33,8 @@ export class Context {
     async screenSnap(name: string) {
         const snapFileName = `${this.friendlyTestName()}-${name}.png`
         const screen = await this.screenshot()
-        await this.screenCapToS3(screen, snapFileName)
+        if (this.isCI)
+            await this.screenCapToS3(screen, snapFileName)
     }
 
     async screenCapToS3(screen: string, name: string) {

@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "selenium": "./bin/deck selenium",
-    "selenium-watch": "./bin/deck selenium -j='--watch'"
+    "selenium:watch": "./bin/deck selenium -j='--watch'",
+    "selenium:viz": "NETWORK=host docker-compose run --no-deps selenium \"npm install && ./bin/deck selenium -u http://`hostname`:4440 -h\""
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "@types/chromedriver": "^2.38.0",
     "@types/indent-string": "^3.0.0",
     "@types/jest": "^22.2.3",
@@ -29,9 +30,7 @@
     "ts-rundeck": "0.0.9",
     "tsconfig-paths": "^3.4.1",
     "tslint": "^5.10.0",
-    "typescript": "^2.8.3"
-  },
-  "dependencies": {
+    "typescript": "^2.8.3",
     "@types/js-yaml": "^3.11.2",
     "aws-sdk": "^2.318.0",
     "axios": "^0.18.0",
