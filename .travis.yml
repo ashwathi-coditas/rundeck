@@ -180,6 +180,7 @@ jobs:
 
 addons:
   hostname: rdbuild
+  chrome: stable
   apt:
     packages:
     - groovy
