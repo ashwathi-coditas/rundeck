@@ -47,7 +47,7 @@ export abstract class Page {
             const serverUuid = await this.ctx.driver.findElement(By.className('rundeck-server-uuid'))
             if (serverUuid)
                 await this.ctx.driver.executeScript((element: HTMLElement) => {
-                    element.parentElement.parentElement.style.setProperty('display', 'none')
+                    element.parentElement.parentElement.parentElement.style.setProperty('display', 'none')
                 }, serverUuid)
         } catch{}
     }
