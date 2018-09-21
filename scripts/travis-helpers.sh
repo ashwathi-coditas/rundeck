@@ -241,6 +241,15 @@ pull_rdtest() {
     docker tag $RDTEST_BUILD_TAG rdtest:latest
 }
 
+pull_rundeck() {
+    docker_login
+
+    local ECR_BUILD_TAG=${ECR_REPO}:build-${RUNDECK_BUILD_NUMBER}
+
+    docker pull $ECR_BUILD_TAG
+    docker tag $ECR_BUILD_TAG rundeck/rundeck
+}
+
 # If this is a snapshot build we will trigger pro
 trigger_downstream_snapshots() {
     if [[ -z "${RUNDECK_TAG}" && "${RUNDECK_BRANCH}" == "master" && "${TRAVIS_EVENT_TYPE}" == "push" ]] ; then
@@ -266,4 +275,5 @@ export -f trigger_travis_build
 export -f docker_login
 export -f build_rdtest
 export -f pull_rdtest
+export -f pull_rundeck
 export -f trigger_downstream_snapshots

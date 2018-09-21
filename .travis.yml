@@ -64,64 +64,70 @@ jobs:
     - script_block 'travis-trigger.testdeck' 'trigger_travis_build "${TRAVIS_OSS_TOKEN}" org rundeck testdeck ${RUNDECK_BRANCH} || true'
 
   # Stage: test
-  - stage: test
-    env: JOB='Test Grails'
-    script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'grails-test' './gradlew -g gradle-cache --build-cache test'
+  # - stage: test
+  #   env: JOB='Test Grails'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'grails-test' './gradlew -g gradle-cache --build-cache test'
 
-  - env: JOB='Docker API tests'
-    script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'docker.pull' pull_rdtest
-    - script_block 'api-test' 'DOCKER_COMPOSE_SPEC=docker-compose-api-mysql.yaml bash test/run-docker-api-tests.sh'
+  # - env: JOB='Docker API tests'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'docker.pull' pull_rdtest
+  #   - script_block 'api-test' 'DOCKER_COMPOSE_SPEC=docker-compose-api-mysql.yaml bash test/run-docker-api-tests.sh'
 
-  - stage: test
-    env: JOB='Test deb install'
-    script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'deb-test' 'bash test/test-docker-install-deb.sh'
+  # - stage: test
+  #   env: JOB='Test deb install'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'deb-test' 'bash test/test-docker-install-deb.sh'
   
-  - env: JOB='Test rpm install'
-    script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'rpm-test' 'bash test/test-docker-install-rpm.sh'
+  # - env: JOB='Test rpm install'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'rpm-test' 'bash test/test-docker-install-rpm.sh'
 
-  - env: JOB='Docker tests'
-    script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'docker.pull' pull_rdtest
-    - script_block 'docker-test' 'bash test/run-docker-tests.sh'
+  # - env: JOB='Docker tests'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'docker.pull' pull_rdtest
+  #   - script_block 'docker-test' 'bash test/run-docker-tests.sh'
   
-  - env: JOB='Docker SSL tests'
-    script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'docker.pull' pull_rdtest
-    - script_block 'docker-ssl-test' 'bash test/run-docker-ssl-tests.sh'
+  # - env: JOB='Docker SSL tests'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'docker.pull' pull_rdtest
+  #   - script_block 'docker-ssl-test' 'bash test/run-docker-ssl-tests.sh'
 
-  - env: JOB='Docker Ansible tests'
-    script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'docker.pull' pull_rdtest
-    - script_block 'docker-ansible-test' 'bash test/run-docker-ansible-tests.sh'
+  # - env: JOB='Docker Ansible tests'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'docker.pull' pull_rdtest
+  #   - script_block 'docker-ansible-test' 'bash test/run-docker-ansible-tests.sh'
 
-  - env: JOB='Docker LDAP tests'
-    script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'docker.pull' pull_rdtest
-    - script_block 'docker-ldap-test' 'bash test/run-docker-ldap-tests.sh'
+  # - env: JOB='Docker LDAP tests'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'docker.pull' pull_rdtest
+  #   - script_block 'docker-ldap-test' 'bash test/run-docker-ldap-tests.sh'
 
-  - env: JOB='Docker LDAP Bind tests'
-    script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'docker.pull' pull_rdtest
-    - script_block 'docker-ldap-bind-test' 'DOCKER_COMPOSE_SPEC=docker-compose-ldap-binding-test.yaml bash test/run-docker-ldap-tests.sh'
+  # - env: JOB='Docker LDAP Bind tests'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'docker.pull' pull_rdtest
+  #   - script_block 'docker-ldap-bind-test' 'DOCKER_COMPOSE_SPEC=docker-compose-ldap-binding-test.yaml bash test/run-docker-ldap-tests.sh'
 
-  - env: JOB='Docker PAM tests'
+  # - env: JOB='Docker PAM tests'
+  #   script:
+  #   - script_block 'sync-artifacts' fetch_common_artifacts
+  #   - script_block 'docker.pull' pull_rdtest
+  #   - script_block 'docker-pam-test' 'bash test/run-docker-pam-tests.sh'
+
+  - stage: test
+    env: JOB='Docker Selenium tests'
     script:
-    - script_block 'sync-artifacts' fetch_common_artifacts
-    - script_block 'docker.pull' pull_rdtest
-    - script_block 'docker-pam-test' 'bash test/run-docker-pam-tests.sh'
+    - script_block 'docker.pull' pull_rundeck
+    - script_block 'docker-seleniu,-test' 'bash test/selenium/travis.sh'
 
   # # Stage: snapshot release publishes snapshot artifacts to external repositories
   - stage: snapshot release
@@ -190,6 +196,7 @@ branches:
     - /^v.*/
     - /^feature\/.*/
     - /^issue\/.*/
+    - selenium
 
 notifications:
   irc:

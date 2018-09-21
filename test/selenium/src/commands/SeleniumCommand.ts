@@ -3,6 +3,7 @@ import {Argv} from 'yargs'
 import {spawn} from 'async/child-process'
 import { Rundeck, PasswordCredentialProvider } from 'ts-rundeck';
 import { ProjectImporter } from 'projectImporter';
+import { sleep } from 'async/util';
 
 interface Opts {
     url: string
@@ -57,6 +58,8 @@ class SeleniumCommand {
 
         const client = new Rundeck(new PasswordCredentialProvider(opts.url, 'admin', 'admin'), opts.url)
 
+        await waitForRundeckReady(client)
+
         const importer = new ProjectImporter('./lib', 'SeleniumBasic', client)
         await importer.importProject()
 
@@ -72,6 +75,19 @@ class SeleniumCommand {
         if (ret != 0)
             process.exitCode = 1
     }
+}
+
+async function waitForRundeckReady(client: Rundeck, timeout = 120000) {
+    const start = Date.now()
+    while (Date.now() - start < timeout) {
+        try {
+            await client.systemInfoGet()
+            return
+        } catch  (e) {
+            await sleep(5000)
+        }
+    }
+    throw new Error('Timeout exceeded waiting for Rundeck to be ready.')
 }
 
 module.exports = new SeleniumCommand()
