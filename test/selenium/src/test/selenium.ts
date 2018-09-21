@@ -14,7 +14,9 @@ jest.setTimeout(60000)
 const envOpts = {
     RUNDECK_URL: process.env.RUNDECK_URL || 'http://127.0.0.1:4440',
     CI: ParseBool(process.env.CI),
-    HEADLESS: ParseBool(process.env.HEADLESS) || ParseBool(process.env.CI)
+    HEADLESS: ParseBool(process.env.HEADLESS) || ParseBool(process.env.CI),
+    S3_UPLOAD: ParseBool(process.env.S3_UPLOAD) || ParseBool(process.env.CI),
+    S3_BASE: process.env.S3_BASE,
 }
 
 export async function CreateContext() {
@@ -41,7 +43,7 @@ export async function CreateContext() {
         .setChromeOptions(opts)
         .build()
 
-    let ctx = new Context(driver, envOpts.RUNDECK_URL, envOpts.CI)
+    let ctx = new Context(driver, envOpts.RUNDECK_URL, envOpts.S3_UPLOAD, envOpts.S3_BASE)
 
     return ctx
 }

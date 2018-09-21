@@ -8,6 +8,8 @@ interface Opts {
     url: string
     jest: string
     headless: boolean
+    s3Upload: boolean
+    s3Base: string
 }
 
 class SeleniumCommand {
@@ -39,6 +41,15 @@ class SeleniumCommand {
                 type: 'boolean',
                 default: false
             })
+            .option('s3-upload', {
+                describe: 'Upload to s3; credentials must be available',
+                type: 'boolean'
+            })
+            .option('s3-base', {
+                describe: 'Base path for uploading artifacts',
+                type: 'string',
+                default: 'projects/rundeck/images/selenium'
+            })
     }
 
     async handler(opts: Opts) {
@@ -54,7 +65,9 @@ class SeleniumCommand {
             env: {
                 ...process.env,
                 RUNDECK_URL: opts.url,
-                HEADLESS: opts.headless.toString()
+                HEADLESS: opts.headless.toString(),
+                S3_UPLOAD: opts.s3Upload.toString(),
+                S3_BASE: opts.s3Base,
             }})
         if (ret != 0)
             process.exitCode = 1
