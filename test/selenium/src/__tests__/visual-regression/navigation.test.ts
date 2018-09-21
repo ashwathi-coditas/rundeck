@@ -22,7 +22,8 @@ beforeEach( async () => {
 
 afterAll( async () => {
     console.log('Disposing')
-    await ctx.dispose()
+    if (ctx)
+        await ctx.dispose()
 })
 
 afterEach( async () => {
@@ -53,7 +54,6 @@ describe('expanded navigation bar', () => {
         await navigation.visitCommands()
         const img = Buffer.from(await navigation.screenshot(true), 'base64')
         expect(img).toMatchImageSnapshot({customSnapshotsDir: '__image_snapshots__', customDiffConfig: {threshold: 0.01}})
-        expect(img).toMatchImageSnapshot()
     })
 
     it('visits activity', async () => {

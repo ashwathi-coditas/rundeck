@@ -19,7 +19,7 @@ const envOpts = {
 
 export async function CreateContext() {
     if (envOpts.HEADLESS) {
-        opts.addArguments('--headless', 'window-size=1192,870')
+        opts.addArguments('--headless', 'window-size=1192,870', '--no-sandbox')
         expect.extend({ toMatchImageSnapshot })
     }
     else {
@@ -34,7 +34,7 @@ export async function CreateContext() {
         })
     }
 
-    opts.addArguments('--disable-rtc-smoothness-algorithm', '--disable-gpu-compositing', '--disable-gpu', '--force-device-scale-factor=1', '--disable-lcd-text', '--font-render-hinting=medium')
+    opts.addArguments('--disable-rtc-smoothness-algorithm', '--disable-gpu-compositing', '--disable-gpu', '--force-device-scale-factor=1', '--disable-lcd-text')
 
     let driver = await new webdriver.Builder()
         .forBrowser('chrome')
