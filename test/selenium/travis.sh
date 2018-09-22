@@ -4,7 +4,7 @@ set -eou pipefail
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 main() {
-    S3_BASE="projects/rundeck/branch/${RUNDECK_BRANCH}/build/${RUNDECK_BUILD_NUMBER}/selenium"
+    S3_BASE="projects/rundeck/branch/${RUNDECK_BRANCH}/build/${RUNDECK_BUILD_NUMBER}/selenium-images"
 
     RET=0
     docker-compose run \
@@ -13,6 +13,10 @@ main() {
         selenium "npm install && ./bin/deck selenium -u http://rundeck:4440 -h --s3-upload --s3-base ${S3_BASE}" || RET=$?
 
     aws s3 sync __image_snapshots__/__diff_output__ s3://ci.rundeck.org/$S3_BASE/diff
+
+    echo "Image output available at: http://ci.rundeck.com/$S3_BASE"
+
+    sleep 1 # Give Travis a shot at capturing the log output
 
     exit $RET
 }

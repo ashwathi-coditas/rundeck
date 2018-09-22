@@ -4,6 +4,7 @@ import {LoginPage} from 'pages/login.page'
 import {NavigationPage} from 'pages/navigation.page'
 
 import 'test/rundeck'
+import { sleep } from 'async/util';
 
 // We will initialize and cleanup in the before/after methods
 let ctx: Context
@@ -45,6 +46,7 @@ describe('expanded navigation bar', () => {
 
     it('visits nodes', async () => {
         await navigation.visitNodes()
+        await sleep(500)
         const img = Buffer.from(await navigation.screenshot(true), 'base64')
         expect(img).toMatchImageSnapshot({customSnapshotsDir: '__image_snapshots__', customDiffConfig: {threshold: 0.01}})
     })
