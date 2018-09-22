@@ -44,7 +44,7 @@ export abstract class Page {
     }
 
     async hideTests() {
-        const testElems = await this.ctx.driver.findElements(By.xpath(`//span[contains(.,'Tests Passed')]`))
+        const testElems = await this.ctx.driver.findElements(By.className('test-elem'))
         if (testElems.length > 0) {
             await this.ctx.driver.executeScript((elements: HTMLElement[]) => {
                 elements.forEach(e => e.style.setProperty('display', 'none'))
