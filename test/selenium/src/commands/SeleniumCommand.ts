@@ -6,6 +6,7 @@ import { ProjectImporter } from 'projectImporter';
 import { sleep } from 'async/util';
 
 interface Opts {
+    debug: boolean
     url: string
     jest: string
     headless: boolean
@@ -51,10 +52,19 @@ class SeleniumCommand {
                 type: 'string',
                 default: 'projects/rundeck/images/selenium'
             })
+            .option('debug', {
+                describe: 'Debug node process',
+                type: 'boolean',
+                default: false
+            })
     }
 
     async handler(opts: Opts) {
-        const args = `./node_modules/.bin/jest ${opts.jest}`
+        let args: string
+        if (opts.debug)
+            args = `node --inspect-brk ./node_modules/.bin/jest --runInBand ${opts.jest}`
+        else
+            args = `./node_modules/.bin/jest ${opts.jest}`
 
         const client = new Rundeck(new PasswordCredentialProvider(opts.url, 'admin', 'admin'), opts.url)
 

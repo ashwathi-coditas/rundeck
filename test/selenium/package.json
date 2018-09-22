@@ -35,7 +35,7 @@
     "mktmpdir": "^0.1.1",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "tmp": "0.0.33",
-    "ts-jest": "^22.4.6",
+    "ts-jest": "^23.10.1",
     "ts-node": "^6.0.3",
     "ts-rundeck": "0.0.10",
     "tsconfig-paths": "^3.4.1",
@@ -56,9 +56,7 @@
       "tsx",
       "js"
     ],
-    "transform": {
-      ".(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
+    "preset": "ts-jest",
     "testMatch": [
       "**/__tests__/**/*.(spec|test).(ts|tsx|js)"
     ],
