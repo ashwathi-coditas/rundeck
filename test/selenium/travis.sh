@@ -7,7 +7,7 @@ main() {
     S3_BASE="projects/rundeck/branch/${RUNDECK_BRANCH}/build/${RUNDECK_BUILD_NUMBER}/selenium-images"
 
     echo -e "Image output available at:\n"
-    echo "http://ci.rundeck.com/$S3_BASE"
+    echo "http://ci.rundeck.org/$S3_BASE"
 
     RET=0
     docker-compose run \
