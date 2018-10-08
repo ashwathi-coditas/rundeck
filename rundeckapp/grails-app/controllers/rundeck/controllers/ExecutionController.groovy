@@ -2095,7 +2095,7 @@ setTimeout(function(){
      * @return
      */
     def apiJobExecutionUpdate() {
-
+        log.debug("update execution status for id: ${params.id}")
         if (!apiService.requireVersion(request, response, ApiVersions.V27)) {
             return
         }
@@ -2115,10 +2115,14 @@ setTimeout(function(){
             return
         }
         def respFormat = apiService.extractResponseFormat(request, response, ['xml', 'json'])
-
+        def date = null;
+        log.debug("previous Status: ${params.previousStatus}, status: ${params.status}, date: ${params.dateCompleted}")
         if (params.previousStatus.equals(e.getExecutionState())) {
             e.setStatus(params.status)
-            e.setDateCompleted(params.dateCompleted)
+            if(params.dateCompleted != null){
+                date= Date.parseToStringDate(params.dateCompleted);
+            }
+            e.setDateCompleted(date)
         }
 
         def result = executionService.updateExecution(e, authContext, session.user);
@@ -2132,6 +2136,7 @@ setTimeout(function(){
                             format: respFormat
                     ])
         }
+        log.debug("Update completed successfully")
         withFormat {
             xml {
                 return executionService.respondExecutionsXml(request, response, [e])
